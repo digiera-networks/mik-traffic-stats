@@ -25,7 +25,7 @@ Remember to change the **address** in the script to **match yours**.
 /ip firewall mangle reset-counters [/ip firewall mangle find comment=wan-rx]
 :log info ("WAN traffic counters have been reset!")
 ```
-5. If all is well, put the script in the **Scheduler** and set it to run every 30 minutes.
+4. If all is well, put the script in the **Scheduler** and set it to run every 30 minutes.
 ```
 /system scheduler
 add interval=30m name=cap_nhat_traffic on-event=":local sysnumber [/system rou\
@@ -44,7 +44,7 @@ add interval=30m name=cap_nhat_traffic on-event=":local sysnumber [/system rou\
     ftp,reboot,read,write,policy,test,password,sniff,sensitive,romon \
     start-time=startup
 ```
-6. Voilà! Check your results by browsing to the path of **index.php**!
+5. Voilà! Check your results by browsing to the path of **index.php**!
 ### Credits
 Some of my codes come from the tikstat project https://github.com/mrkrasser/tikstat
 ### Contact info
