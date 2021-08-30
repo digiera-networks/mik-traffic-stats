@@ -3,90 +3,127 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 $db = new SQLite3('mikstats.db', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
 // Traffic theo nam (yearly stats)
 $yearly = $db->query("SELECT strftime('%Y', timestamp), sum(tx), sum(rx), sum(tx)+sum(rx) FROM traffic GROUP BY strftime('%Y', timestamp);");
-$monthly = $db->query("SELECT strftime('%Y-%m', timestamp), sum(tx), sum(rx), sum(tx)+sum(rx) FROM traffic GROUP BY strftime('%Y-%m', timestamp);");
-$daily = $db->query("SELECT strftime('%Y-%m-%d', timestamp), sum(tx), sum(rx), sum(tx)+sum(rx) FROM traffic GROUP BY strftime('%Y-%m-%d', timestamp);");
+$monthly = $db->query("SELECT strftime('%m-%Y', timestamp), sum(tx), sum(rx), sum(tx)+sum(rx) FROM traffic GROUP BY strftime('%m-%Y', timestamp);");
+$daily = $db->query("SELECT strftime('%d-%m-%Y', timestamp), sum(tx), sum(rx), sum(tx)+sum(rx) FROM traffic GROUP BY strftime('%d-%m-%Y', timestamp);");
 
 ?>
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Traffic Stats - Thống kê lưu lượng</title>
-    </head>
+<html lang="en">
+<head>
+  <title>Traffic Stats - Thống kê lưu lượng</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+      .title {
+          font-size: 30px;
+          font-weight: 600;
+          text-align:center;
+          color:blue;
+          margin: 50px 0 50px 0;
+      }
+      .table-title {
+          font-size: 20px;
+          font-weight: 600;
+          text-align:center;
+          color:red;
+      }
+      .table{
+          margin-bottom: 50px;
+      }
+      .footer{
+        font-size:12px;
+        font-weight:500;
+        text-align:center;
+      }
+  </style>
+</head>
+<body>
+        <div class="container">
+            <div class="title">
+                <div>Hệ thống thống kê lưu lượng WAN Mikrotik</div>
+	            <div>Router: Home - Trương Anh Tuấn</div>
+	            
+            </div>
+            <div class="table-title">Lưu lượng theo Năm</div>
+            <table class="table table-striped">
+				<thead>
+					<th>Năm</th>
+					<th>Tải lên (Upload)</th>
+					<th>Tải xuống (Download)</th>
+					<th>Tổng lưu lượng</th>
+				</thead>
+				<tbody>
+				<?php
+					
+					 while ($row = $yearly->fetchArray(SQLITE3_ASSOC)) {
 
-    <body>
-	<p style="text-align: center; font-size: 27px;"><span style="color: #0000ff;"><strong>Hệ thống thống k&ecirc; lưu lượng WAN Mikrotik</strong><br /><strong>Thiết kế v&agrave; vận h&agrave;nh bởi DigiEra Networks</strong><br /></span></p>
-	
-	<p style="text-align: center; font-size: 20px;"><span style="color: #ff0000;"><strong>Lưu lượng theo Năm</strong></span></p>
-        <table width="800" border="2" cellpadding="3" cellspacing='2' align="center">
+						   echo "<tr>";
+							   echo "<td>".$row["strftime('%Y', timestamp)"]."</td>";
+							   echo "<td>".number_format($row["sum(tx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
+							   echo "<td>".number_format($row["sum(rx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
+							   echo "<td>".number_format($row["sum(tx)+sum(rx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
+						   echo "</tr>";
 
-           <tr bgcolor="#2ECCFA">
-                     <th>Năm</th>
-                     <th>Tải lên (Upload)</th>
-                     <th>Tải xuống (Download)</th>
-					 <th>Tổng lưu lượng</th>
-           </tr>
-<?php
-
-     while ($row = $yearly->fetchArray(SQLITE3_ASSOC)) {
-
-           echo "<tr>";
-               echo "<td>".$row["strftime('%Y', timestamp)"]."</td>";
-               echo "<td>".number_format($row["sum(tx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
-               echo "<td>".number_format($row["sum(rx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
-			   echo "<td>".number_format($row["sum(tx)+sum(rx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
-           echo "</tr>";
-
-     }
-?>
-	   </table>
+					 }
+				?>
+				</tbody>
+		   </table>
 	  
-	   <p style="text-align: center; font-size: 20px;"><span style="color: #ff0000;"><strong>Lưu lượng theo Tháng</strong></span></p>
-	<table width="800" border="2" cellpadding="3" cellspacing='2' align="center">
+		   <div class="table-title">Lưu lượng theo Tháng</div>
+			<table class="table table-striped">
+					<thead>
+						<th>Tháng</th>
+						<th>Tải lên (Upload)</th>
+						<th>Tải xuống (Download)</th>
+						<th>Tổng lưu lượng</th>
+					</thead>
+					<tbody>
+					<?php
+                     
+					 while ($row = $monthly->fetchArray(SQLITE3_ASSOC)) {
 
-           <tr bgcolor="#2ECCFA">
-                     <th>Tháng</th>
-                     <th>Tải lên (Upload)</th>
-                     <th>Tải xuống (Download)</th>
-					 <th>Tổng lưu lượng</th>
-           </tr>
-<?php
+						   echo "<tr>";
+							   echo "<td>".$row["strftime('%m-%Y', timestamp)"]."</td>";
+							   echo "<td>".number_format($row["sum(tx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
+							   echo "<td>".number_format($row["sum(rx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
+							   echo "<td>".number_format($row["sum(tx)+sum(rx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
+						   echo "</tr>";
 
-     while ($row = $monthly->fetchArray(SQLITE3_ASSOC)) {
+					 }
+					?>
+					</tbody>
+				</table>
+			<div class="table-title">Lưu lượng theo Ngày</div>
+			<table class="table table-striped">
+					<thead>
+						<th>Ngày</th>
+						<th>Tải lên (Upload)</th>
+						<th>Tải xuống (Download)</th>
+						<th>Tổng lưu lượng</th>
+					</thead>
+					<tbody>
+				<?php
 
-           echo "<tr>";
-               echo "<td>".$row["strftime('%Y-%m', timestamp)"]."</td>";
-               echo "<td>".number_format($row["sum(tx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
-               echo "<td>".number_format($row["sum(rx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
-			   echo "<td>".number_format($row["sum(tx)+sum(rx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
-           echo "</tr>";
+					 while ($row = $daily->fetchArray(SQLITE3_ASSOC)) {
 
-     }
-?>
-        </table>
-		<p style="text-align: center; font-size: 20px;"><span style="color: #ff0000;"><strong>Lưu lượng theo Ngày</strong></span></p>
-	<table width="800" border="2" cellpadding="3" cellspacing='2' align="center">
+						   echo "<tr>";
+							   echo "<td>".$row["strftime('%d-%m-%Y', timestamp)"]."</td>";
+							   echo "<td>".number_format($row["sum(tx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
+							   echo "<td>".number_format($row["sum(rx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
+							   echo "<td>".number_format($row["sum(tx)+sum(rx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
+						   echo "</tr>";
 
-           <tr bgcolor="#2ECCFA">
-                     <th>Ngày</th>
-                     <th>Tải lên (Upload)</th>
-                     <th>Tải xuống (Download)</th>
-					 <th>Tổng lưu lượng</th>
-           </tr>
-<?php
-
-     while ($row = $daily->fetchArray(SQLITE3_ASSOC)) {
-
-           echo "<tr>";
-               echo "<td>".$row["strftime('%Y-%m-%d', timestamp)"]."</td>";
-               echo "<td>".number_format($row["sum(tx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
-               echo "<td>".number_format($row["sum(rx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
-			   echo "<td>".number_format($row["sum(tx)+sum(rx)"]/1024/1024/1024,2,'.',' ')." GB </td>";
-           echo "</tr>";
-
-     }
-?>
-        </table>
-   </body>
-
+					 }
+				?>
+				</tbody>
+			</table>
+		</div>
+</body>
+<footer>
+    <div class="footer">Thiết kế và vận hành bởi DigiEra Networks</div>
+</footer>
 </html>
 
