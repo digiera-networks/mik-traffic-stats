@@ -1,6 +1,6 @@
 ## Mik-traffic-stats - A tool for monitoring and reporting traffic on Mikrotik routers
 ### Features
-![screenshot](https://github.com/digiera-networks/mik-traffic-stats/blob/main/screenshot.jpg?raw=true)
+![screenshot](https://github.com/digiera-networks/mik-traffic-stats/raw/27f97e8b251bda7c9292abdd922046860031b0a4/screenshot.jpg?raw=true)
  - Monitoring and reporting egress and ingress traffic on the WAN interface of Mikrotik routers (daily, monthly and yearly) using passthrough mangle rules.
  - Utilizing SQLite to store data, hence straightforward deployment, customization and transition.
  - The monitoring server can be on the internal network or external one (using a low-power Raspberry Pi is ideal).
