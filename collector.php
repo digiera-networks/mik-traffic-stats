@@ -1,14 +1,15 @@
 <?php
 /*
-Usage: /collector.php?sn=<SERIAL NUMBER>&tx=<INTERFACE TX BYTES>&rx=<INTERFACE TX BYTES>
+Usage: /collector.php?secret=<SECRET KEY>&sn=<SERIAL NUMBER>&tx=<INTERFACE TX BYTES>&rx=<INTERFACE TX BYTES>
 */
 
 require("init.php");
 
 // Check input data
 if (isset($_GET['sn'])
-	and isset($_GET['tx']) and is_numeric($_GET['tx'])
-	and isset($_GET['rx']) and is_numeric($_GET['rx'])) {
+	&& isset($_GET['tx']) && is_numeric($_GET['tx'])
+	&& isset($_GET['rx']) && is_numeric($_GET['rx'])
+    && isset($_GET['secret']) && $_GET['secret'] === $config['secret']) {
 	$device_serial = substr($_GET['sn'], 0, 12);
 } else {
 	echo 'fail';

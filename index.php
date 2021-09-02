@@ -1,6 +1,6 @@
 <?php
-date_default_timezone_set('Asia/Ho_Chi_Minh');
-$db = new SQLite3('mikstats.db', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+
+require("init.php");
 // Traffic theo nam (yearly stats)
 $yearly = $db->query("SELECT strftime('%Y', timestamp), sum(tx), sum(rx), sum(tx)+sum(rx) FROM traffic GROUP BY strftime('%Y', timestamp) ORDER BY timestamp DESC;");
 $monthly = $db->query("SELECT strftime('%m-%Y', timestamp), sum(tx), sum(rx), sum(tx)+sum(rx) FROM traffic GROUP BY strftime('%m-%Y', timestamp) ORDER BY timestamp DESC;");
