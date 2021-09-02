@@ -5,7 +5,7 @@
  - Utilizing SQLite to store data, hence straightforward deployment, customization and transition.
  - The monitoring server can be on the internal network or external one (using a low-power Raspberry Pi is ideal).
 ### Installation
-1. Put the three **PHP files** on your web server and take note of their path. Be sure to set the correct **permissions** so that the database file is writable.
+1. Put the three **PHP files** on your web server and take note of their path. Change configuration in `config.php`. Be sure to set the correct **permissions** so that the database file is writable.
 2. On the mikrotik router, create the following **mangle rules** for traffic monitoring.
 ```
 /ip firewall mangle
@@ -20,7 +20,7 @@ Remember to change the **address** in the script to **match yours**.
 :local sysnumber [/system routerboard get value-name=serial-number]
 :local txbytes [/ip firewall mangle { get [find comment=wan-tx] bytes }]
 :local rxbytes [/ip firewall mangle { get [find comment=wan-rx] bytes }]
-/tool fetch url=("http://1.2.3.4/mikstats/collector.php\?sn=$sysnumber&tx=$txbytes&rx=$rxbytes") mode=http keep-result=no
+/tool fetch url=("http://1.2.3.4/mikstats/collector.php\?secret=<SECRET KEY>&sn=$sysnumber&tx=$txbytes&rx=$rxbytes") mode=http keep-result=no
 /ip firewall mangle reset-counters [/ip firewall mangle find comment=wan-tx]
 /ip firewall mangle reset-counters [/ip firewall mangle find comment=wan-rx]
 :log info ("WAN traffic counters have been reset!")
