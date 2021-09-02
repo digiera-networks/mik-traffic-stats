@@ -34,7 +34,7 @@ add interval=30m name=cap_nhat_traffic on-event=":local sysnumber [/system rou\
     \r\
     \n:local rxbytes [/ip firewall mangle { get [find comment=wan-rx] bytes }]\
     \r\
-    \n/tool fetch url=(\"http://1.2.3.4/mikstats/collector.php\\\?sn=\$sy\
+    \n/tool fetch url=(\"http://1.2.3.4/mikstats/collector.php\\\?secret=<SECRET KEY>&sn=\$sy\
     snumber&tx=\$txbytes&rx=\$rxbytes\") mode=http keep-result=no\r\
     \n/ip firewall mangle reset-counters [/ip firewall mangle find comment=wan\
     -tx]\r\
