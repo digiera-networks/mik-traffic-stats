@@ -1,10 +1,13 @@
 <?php
+
+$config = require("config.php");
+
 //set local timezone to Vietnam
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 
 // Create a new database, if the file doesn't exist and open it for reading/writing.
 // The extension of the file is arbitrary.
-$db = new SQLite3('mikstats.db', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+$db = new SQLite3($config['sqlite_filename'], SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
 
 // Create tables.
 // Base table for devices
